@@ -1,0 +1,820 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="techtime_mcc_data.list">
+      <field name="name">techtime_mcc_data list</field>
+      <field name="model">techtime_mcc_data.techtime_mcc_data</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </tree>
+      </field>
+    </record>
+
+
+-->
+
+
+    <record model="ir.ui.view" id="techtime_mcc_data.list">
+      <field name="name">techtime_mcc_data list</field>
+      <field name="model">techtime_mcc_data.techtime_mcc_data</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+
+        </tree>
+      </field>
+    </record>
+
+
+    <record id="view_sale_order_serach_inherit_year" model="ir.ui.view">
+      <field name="name">res.partner.form</field>
+      <field name="model">res.partner</field>
+      <field name="inherit_id" ref="base.view_res_partner_filter"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='name']" position="after">
+            <field name="year" filter_domain="[('year', 'ilike', self)]"/>
+            <field name="college" filter_domain="[('college', 'ilike', self)]"/>
+            <field name="year_of_acceptance_1" />
+            <field name="data_one" />
+            <field name="Status" filter_domain="[('Status', 'ilike', self)]"/>
+            <field name="shift" filter_domain="[('shift', 'ilike', self)]"/>
+            <field name="level" filter_domain="[('level', 'ilike', self)]"/>
+            <field name="student_type" />
+            <field name="department" />
+        </xpath>
+      </field>
+    </record>
+
+
+
+        <record id="view_sale_order_serach_inherit_year_sale_order" model="ir.ui.view">
+      <field name="name">sale.order.form</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='name']" position="after">
+            <field name="year" filter_domain="[('year', 'ilike', self)]"/>
+            <field name="college" filter_domain="[('college', 'ilike', self)]"/>
+            <!-- <field name="year_of_acceptance_1" /> -->
+            <!-- <field name="data_one" /> -->
+            <field name="user_id"/>
+                    <field name="team_id" string="Sales Team"/>
+            <field name="Status" filter_domain="[('Status', 'ilike', self)]"/>
+
+            <field name="Subject" filter_domain="[('Subject', 'ilike', self)]"/>
+            <field name="level" filter_domain="[('level', 'ilike', self)]"/>
+            <field name="student" />
+            <field name="department" />
+        </xpath>
+      </field>
+    </record>
+
+    
+
+<!--         <report
+            id="report_payment_receipt_student"
+            model="account.payment"
+            string="الوصل"
+            report_type="qweb-pdf"
+            name="techtime_mcc_data.report_payment_receipt_student"
+            file="techtime_mcc_data.report_payment_receipt_student"
+            menu="True"
+        />
+ -->
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="techtime_mcc_data.action_window">
+      <field name="name">techtime_mcc_data window</field>
+      <field name="res_model">techtime_mcc_data.techtime_mcc_data</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record model="ir.ui.view" id="techtime_mcc_data_new_work">
+      <field name="name">New list</field>
+      <field name="model">new.work</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="techtime_mcc_data_action_windownew_work">
+      <field name="name">new work window</field>
+      <field name="res_model">new.work</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <record id="view_sales_order_filter_sale_res_partner_data" model="ir.ui.view">
+        <field name="name">res.partner</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="techtime_student_excel.view_sales_order_filter_sale_res_partner"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='year_of_acceptance']" position="replace">
+               <field name="year_of_acceptance_1"/>
+           </xpath>
+       </field>
+   </record>
+
+
+   <record id="ir_actions_server_sale_res_partner_data_s" model="ir.actions.server">
+        <field name="name">New Student</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.send_mis_report_sale_student_data_report()
+        </field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_server_sale_sale_order_s" model="ir.actions.server">
+        <field name="name">New Student</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.send_mis_report_sale_student_data_report()
+        </field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_server_sale_res_partner_data_s_image" model="ir.actions.server">
+        <field name="name">New Student RFID excel</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.report_for_export_image()
+        </field>
+        <field name="binding_model_id" ref="base.model_res_partner"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_payslip_data_new" model="ir.actions.server">
+        <field name="name">New Payslip Data</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.send_mis_report_sale_payslip_data()
+        </field>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <act_window id="sale_order_download_pack_action"
+        name="Pack Students Image (ZIP)"
+        res_model="ir.model.download_pack"
+        binding_model="res.partner"
+        view_mode="form"
+        target="new"
+        />
+
+
+
+
+        <record model="ir.ui.view" id="techtime_mcc_data_attachemt_sale_order">
+      <field name="name">Sale Order</field>
+      <field name="model">sale.order</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name" string="Name"/>
+                    <field name="Status"/>
+                    <field name="college_number"/>
+                    <field name="student_no"/>
+                    <field name="year"  options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}" />
+                    <field name="college" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="department" domain="[('college', '=', college)]"  context="{'default_college': college}" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}"/>
+
+                    <field name="student" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="Subject" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="level" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="state"/>
+
+        </tree>
+      </field>
+    </record>
+
+
+
+    <record model="ir.ui.view" id="view_any_name_form_level_value_attachment_sale_order">
+        <field name="name">sale.order.form</field>
+        <field name="model">sale.order</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="My Form">
+                <sheet>                         
+                    <group> 
+<field name="name" string="Name"/>
+                    <field name="Status"/>
+                    <field name="college_number"/>
+                    <field name="student_no"/>
+                    <field name="year"  options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}" />
+                    <field name="college" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="department" domain="[('college', '=', college)]"  context="{'default_college': college}" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}"/>
+
+                    <field name="student" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="Subject" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="level" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    <field name="state"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+    <record model="ir.actions.act_window" id="techtime_mcc_data_attchment_widnet_sale_order">
+      <field name="name">Sale Order</field>
+      <field name="res_model">sale.order</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_invoice_salesteams_view_tree_inherit" model="ir.actions.act_window.view">
+            <field name="sequence">1</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="techtime_mcc_data.techtime_mcc_data_attachemt_sale_order"/>
+            <field name="act_window_id" ref="techtime_mcc_data_attchment_widnet_sale_order"/>
+        </record>
+
+        <record id="action_invoice_salesteams_view_form_inherit" model="ir.actions.act_window.view">
+            <field name="sequence">2</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="techtime_mcc_data.view_any_name_form_level_value_attachment_sale_order"/>
+            <field name="act_window_id" ref="techtime_mcc_data_attchment_widnet_sale_order"/>
+        </record>
+
+
+    
+
+
+
+    <record id="view_sale_order_inherit_search_hr_contract" model="ir.ui.view">
+      <field name="name">hr.contract.form</field>
+      <field name="model">hr.contract</field>
+      <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='advantages']" position="after">
+            <field name="employ_type" invisible="1"/>
+           <field name="training_field"/>
+            <field name="basic_salary"/>
+            <field name="compensation1"/>
+            
+            <field name="social_security"/>
+
+            
+            <field name="compensation"/>
+            <field name="married_with_house_wife"/>
+            <field name="married_with_working_wife"/>
+            <field name="married_with_non_working_husband"/>
+            <field name="married_with_working_husband"/>
+
+            <field name="male_female_with_children"/>
+
+            <field name="single_male"/>
+            
+            <field name="divorced_male"/>
+            <!-- <field name="sinle_female"/> -->
+            <field name="divorced_female"/>
+            <field name="if_age_is_above_63"/>
+            <field name="total_salary"/>
+            <field name="tota_before"/>
+        </xpath>
+
+        <xpath expr="//group[@name='salary_and_advantages']" position="after">
+            <group>
+            <field name="day_deduction"/>
+            <field name="basic_salary_one"/>
+            <field name="compensation_one"/>
+        </group>
+        </xpath>
+      </field>
+    </record>
+
+
+        <record id="view_sale_order_inherit__employee_feilds" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page" position="after">
+            <page string="Calculative Data">
+                <group>
+                    <group>
+                        <field name="wedding_date"/>
+                    <field name="date_divource"/>
+                    <field name="husband_id"/>
+                    <field name="field_1"/>
+                    <field name="field_2"/>
+                    <field name="field_3"/>
+                    <field name="field_4"/>
+                    <field name="field_5"/>
+                    <field name="field_6"/>
+                    <field name="total_of_above_field" />
+                    </group>
+                    <group>
+                        <field name="date_of_death"/>
+                    <field name="house_wife"/>
+                    <field name="husband_working"/>
+                    <field name="merge_salary"/>
+                    <field name="field_7"/>
+                    <field name="field_8"/>
+                    <field name="field_9"/>
+                    <field name="field_10"/>
+
+                    <field name="total_of_above_2"  />
+
+                    <field name="grand_total" />
+                    </group>
+                </group>
+                </page>
+                    
+
+
+        </xpath>
+      </field>
+    </record>
+
+
+
+<!--     <record id="res_partner_view_search_inherit_data_batch_data" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="groups_id" eval="[(6, 0, [ref('sales_team.group_sale_salesman')])]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='child_ids']" position="before">
+                <group>
+                    <field name="sale_order_ids" colspan="4" nolabel="1">
+                                <tree string="Sale Order" editable="bottom">
+                                    <field name="year"  options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}" />
+                                    <field name="college" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="department" domain="[('college', '=', college)]"  context="{'default_college': college}" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}"/>
+
+                                    <field name="student" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="Subject" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="level" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    
+                                </tree>
+                                <form string="Sale Order">
+                                    <group col="4">
+                                        <field name="year"  options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}" />
+                                        <field name="college" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                        <field name="department" domain="[('college', '=', college)]"  context="{'default_college': college}" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}"/>
+
+                                        <field name="student" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                        <field name="Subject" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                        <field name="level" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                    
+                                    </group>
+                                </form>
+                            </field>
+                </group>
+            </xpath>
+        </field>
+    </record>
+ -->
+
+ <record id="extra_hr_payslip_run_view_tree" model="ir.ui.view">
+        <field name="name">hr.payslip.tree.extra</field>
+        <field name="model">hr.payslip</field>
+        <field name="priority" eval="20" />
+        <field name="arch" type="xml">
+            <tree string="Payslips Batches">
+                <field name="employee_id"/>
+                <field name="Account_number"/>
+                <field name="net_salary"/>
+
+                <field name="name" invisible="1"/>
+                <field name="date_from" invisible="1"/>
+                <field name="date_to" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}" invisible="1"/>
+                <field name="payslip_run_id" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+    <record id="extra_hr_payslip_run_action" model="ir.actions.act_window">
+        <field name="name">Payslips New</field>
+        <field name="res_model">hr.payslip</field>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="extra_hr_payslip_run_view_tree"/>
+    </record>
+    <menuitem
+        action="extra_hr_payslip_run_action"
+        id="extrahr_payslip_run_menu"
+        parent="payroll.payroll_menu_root"
+    />
+
+
+    <record id="ir_actions_server_sale_cart_data_done_day" model="ir.actions.server">
+        <field name="name">Change Day Deduction</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.change_the_day_deduction()
+        </field>
+        <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_server_sale_cart_data_done_day" model="ir.actions.server">
+        <field name="name">Change Day Deduction</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_contract"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.change_the_day_deduction()
+        </field>
+        <field name="binding_model_id" ref="hr_contract.model_hr_contract"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_server_add_the_value_data" model="ir.actions.server">
+        <field name="name">Add All the Value</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.change_the_value_department()
+        </field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    
+
+    <record id="ir_actions_server_add_the_hr_payslip_net_dalary" model="ir.actions.server">
+        <field name="name">Set Net Salary</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records._value_pc()
+        </field>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_server_add_the_hr_payslip" model="ir.actions.server">
+        <field name="name">Set to Done</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.change_the_value_payslip()
+        </field>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+<record id="ir_actions_server_add_the_hr_paysli_loack" model="ir.actions.server">
+        <field name="name">Set to Lock</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.change_the_value_verify()
+        </field>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+
+
+
+
+        <record model="ir.ui.view" id="view_any_name_form_level_value_data_m">
+        <field name="name">level.value.form</field>
+        <field name="model">level.value</field>
+        <field name="inherit_id" ref="techtime_student_excel.view_any_name_form_level_value"/>
+        <!-- <field name="type">form</field> -->
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='year']" position="after">
+                <field name="Status" invisible="1"/>
+                <field name="contact_type" invisible="1"/>
+                    <field name="notes_data"/>
+                <field name="data_date_value"/>
+                <field name="sequence_num"/>
+                <field name="attachment" widget="many2many_binary"/>
+        </xpath>
+        </field>
+    </record>
+
+
+        <record id="view_sale_order_inherit_search_hr_payslip" model="ir.ui.view">
+      <field name="name">hr.payslip.form</field>
+      <field name="model">hr.payslip</field>
+      <field name="inherit_id" ref="payroll.hr_payslip_view_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='credit_note']" position="after">
+            <field name="department"/>
+            <field name="description"/>
+        </xpath>
+      </field>
+    </record>
+
+
+
+    <record id="hr_payslip_view_search_inherit_data" model="ir.ui.view">
+        <field name="name">hr.payslip.select</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="payroll.hr_payslip_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='employee_id']" position="after">
+                <field name="department" />
+            </xpath>
+
+            <xpath expr="//group" position="inside">
+                <filter
+                        string="Department"
+                        name="department"
+                        context="{'group_by':'department'}"
+                    />
+            </xpath>
+        </field>
+    </record>
+
+
+               <record id="hr_payslip_view_search_inherit_data_sale_order" model="ir.ui.view">
+        <field name="name">sale.order.select</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_overdue']" position="after">
+                <filter string="No Invoice" domain="[('invoice_count', '=', 0)]" name="invoice_count"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+    <record id="res_partner_view_search_inherit_data" model="ir.ui.view">
+        <field name="name">res.partner.select</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[1]" position="before">
+                <group>
+
+                    <field name="rfid"/>
+                    <field name="data_one"   options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" invisible="1"/>
+
+                    <field name="attachment" widget="many2many_binary" invisible="1"/>
+
+                    <field name="file_upload"/>
+                    <field name="attachment_upload"/>
+
+                    <field name="notes_data" invisible="1"/>
+                <field name="data_date_value" invisible="1"/>
+                <field name="sequence_num" invisible="1"/>
+                
+
+                    <field name="field_one_1"/>
+                    <field name="fields_one_2"/>
+
+                </group>
+            </xpath>
+            <xpath expr="//page" position="after">
+                <page string="Change Log">
+                <group>
+            <field name="remark_data_change" nolabel="1">
+                                <tree string="Sale Order" editable="bottom">
+                                    <field name="level"  options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}" />
+                                    <field name="notes_data" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+
+                                    <field name="data_date_value" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="sequence_num" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="create_date"/>
+                                    <field name="attachment" widget="many2many_binary"/>
+                                    
+                                </tree>
+                                <form string="Sale Order">
+                                    <group col="4">
+                                        <field name="level"  options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}" />
+                                    <field name="notes_data" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+
+                                    <field name="data_date_value" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="sequence_num" options="{'no_quick_create': True, 'no_create_edit' : True , 'no_open':True}" />
+                                    <field name="create_date"/>
+                                    <field name="attachment" widget="many2many_binary"/>
+                    
+                                    </group>
+                                </form>
+                            </field>
+                        </group>
+                    </page>
+                        </xpath>
+        </field>
+    </record>
+
+
+        <record id="sale_order_view_search_inherit_data" model="ir.ui.view">
+        <field name="name">sale.order.select</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="invoice_count_new"/>
+            </xpath>
+        </field>
+    </record>
+
+
+        <record id="view_hr_job_form_inheri_mcc" model="ir.ui.view">
+        <field name="name">hr.job.select</field>
+        <field name="model">hr.job</field>
+        <field name="inherit_id" ref="hr.view_hr_job_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="sequence"/>
+            </xpath>
+        </field>
+    </record>
+
+
+
+
+    <record id="hr_payslip_view_search_inherit_data_sale_order" model="ir.ui.view">
+        <field name="name">sale.order.select</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='activities_overdue']" position="after">
+                <filter string="No Invoice" domain="['|',('invoice_count_new', '=', 0),('invoice_count_new', '=', False)]" name="invoice_count_new"/>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="ir_actions_server_sale_cart_invoice_count_status" model="ir.actions.server">
+        <field name="name">Change the Invoice Count</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records._inverse_invoice_count_new()
+        </field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+        <report
+            id="report_account_move_line_pending"
+            model="account.move.line"
+            string="Pending Amount"
+            report_type="qweb-pdf"
+            name="techtime_mcc_data.report_payment_receipt_unpaid"
+            file="techtime_mcc_data.report_payment_receipt_unpaid"
+            menu="True"
+        />
+
+
+
+                <report
+            id="report_account_move_line_pending_new_temp"
+            model="hr.contract"
+            string="Contract Template"
+            report_type="qweb-pdf"
+            name="techtime_mcc_data.report_payment_receipt_unpaid_new_temp"
+            file="techtime_mcc_data.report_payment_receipt_unpaid_new_temp"
+            menu="True"
+        />
+
+
+    <record id="res_partner_view_kanban_inherit_pos_sale" model="ir.ui.view"> 
+        <field name="name">res.partner.kanban</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+        <data>
+            <xpath expr="//field[@name='email']" position="after">
+                <field name="file_upload" />
+                <field name="message_main_attachment_id"/>
+            </xpath>
+            <xpath expr="//strong[hasclass('oe_partner_heading')]" position="before">
+                <div class="float-right" t-if="record.file_upload.raw_value">
+                    <span class="fa fa-circle text-success" role="img" aria-label="File" title="File" name="file_upload"/>
+                </div>
+                <div class="float-right" t-if="record.file_upload.raw_value == false">
+                    <span class="fa fa-circle text-danger" role="img" aria-label="nofile" title="nofile" name="file_upload_2"/>
+                </div>
+
+
+                <div class="float-right" t-if="record.message_main_attachment_id.raw_value">
+                    <span class="fa fa-exclamation-triangle text-success" role="img" aria-label="File" title="File" name="message_main_attachment_id"/>
+                </div>
+                <div class="float-right" t-if="record.message_main_attachment_id.raw_value == false">
+                    <span class="fa fa-exclamation-triangle text-danger" role="img" aria-label="nofile" title="nofile" name="message_main_attachment_id_2"/>
+                </div>
+
+
+                
+            </xpath>
+        </data>
+    </field>
+</record>
+
+
+<!--         <report
+            id="report_payment_receipt_student"
+            model="account.payment"
+            string="الوصل"
+            report_type="qweb-pdf"
+            name="techtime_mcc_data.report_payment_receipt_student"
+            file="techtime_mcc_data.report_payment_receipt_student"
+            menu="True"
+        />
+ -->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="techtime_mcc_data.action_window">
+      <field name="name">techtime_mcc_data window</field>
+      <field name="res_model">techtime_mcc_data.techtime_mcc_data</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="techtime_mcc_data.action_server">
+      <field name="name">techtime_mcc_data server</field>
+      <field name="model_id" ref="model_techtime_mcc_data_techtime_mcc_data"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="techtime_mcc_data" id="techtime_mcc_data.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="techtime_mcc_data.menu_1" parent="techtime_mcc_data.menu_root"/>
+    <menuitem name="Menu 2" id="techtime_mcc_data.menu_2" parent="techtime_mcc_data.menu_root"/>
+-->
+    <!-- actions -->
+
+    <menuitem name="نافذة القبول" id="techtime_mcc_data.menu_1_list" parent="contacts.res_partner_menu_contacts"
+              action="techtime_mcc_data.techtime_mcc_data_action_windownew_work"/>
+
+                  <menuitem name="Sale Order" id="techtime_mcc_data_sale_order" parent="contacts.menu_contacts"
+              action="techtime_mcc_data.techtime_mcc_data_attchment_widnet_sale_order" sequence="2"/>          
+
+              
+
+<!--
+    <menuitem name="List" id="techtime_mcc_data.menu_1_list" parent="techtime_mcc_data.menu_1"
+              action="techtime_mcc_data.action_window"/>
+    <menuitem name="Server to list" id="techtime_mcc_data" parent="techtime_mcc_data.menu_2"
+              action="techtime_mcc_data.action_server"/>
+-->
+  </data>
+</odoo>

@@ -1,0 +1,205 @@
+<odoo>
+  <data>
+<!--        <record id="act_hr_employee_holiday_request_payrool" model="ir.actions.server">
+        <field name="name">Payroll Excel sheet</field>
+        <field name="model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report()
+        </field>
+    </record> -->
+
+    <record id="act_hr_employee_holiday_department_data" model="ir.actions.server">
+        <field name="name">Department Excel</field>
+        <field name="model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report_for_department()
+        </field>
+    </record>
+
+
+    <record id="holiday_department_data_new" model="ir.actions.server">
+        <field name="name">Department Excel New</field>
+        <field name="model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report_for_department_new()
+        </field>
+    </record>
+
+    
+
+    <record id="ir_actions_server_sale_action_confirm" model="ir.actions.server">
+        <field name="name">Compute Sheet</field>
+        <field name="model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+
+                for rec in records:
+
+                    action = rec.compute_sheet()
+        </field>
+    </record>
+
+
+    <record id="holiday_department_data_new_new" model="ir.actions.server">
+        <field name="name">Department Excel</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report_for_department_new_sheet()
+        </field>
+    </record>
+
+
+    <record id="holiday_department_levekl_data" model="ir.actions.server">
+        <field name="name">Amount Due Excel</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report_for_department_new_data_level()
+        </field>
+    </record>
+
+
+    <record id="holiday_department_levekl_data_without_fifty" model="ir.actions.server">
+        <field name="name">Amount Due Excel Without 50000</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report_for_department_new_data_level_without_fifty()
+        </field>
+    </record>
+
+    <record id="holiday_department_levekl_data_without_fifty_sst_payslip" model="ir.actions.server">
+        <field name="name">SST Payslip excel</field>
+        <field name="model_id" ref="payroll.model_hr_payslip"/>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip"/>
+        <field name="state">code</field>
+        <field name="code">
+        if records:
+          action = records.send_mis_report_techtime_data()
+        </field>
+    </record>
+
+
+
+
+    
+
+<!--     <record id="res_partner_view_search_inherit_data_batch" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="account.view_partner_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='property_account_payable_id']" position="after">
+                <group>
+                    <field name="batch"/>
+                </group>
+            </xpath>
+        </field>
+    </record> -->
+
+
+    <record id="ir_actions_server_sale_cart_recovery_email_payroll" model="ir.actions.server">
+        <field name="name">Payslip excel</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_hr_payslip_run"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.send_mis_report()
+        </field>
+        <field name="binding_model_id" ref="payroll.model_hr_payslip_run"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="ir_actions_server_data" model="ir.actions.server">
+        <field name="name">Balanace Change</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_account_move_line"/>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records._inverse_balanace()
+        </field>
+        <field name="binding_model_id" ref="account.model_account_move_line"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+
+    <record id="product_product_view_department" model="ir.ui.view">
+            <field name="name">hr.department.extended</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sequence"/>
+                </xpath>
+            </field>
+        </record>
+
+
+    <record id="product_product_view_department_tree" model="ir.ui.view">
+            <field name="name">hr.department.extended</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='display_name']" position="before">
+                    <field name="sequence"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="product_product_view_department_tree_account_move" model="ir.ui.view">
+            <field name="name">account.move.line.extended</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_move_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='credit']" position="after">
+                    <field name="balanace"/>
+                </xpath>
+            </field>
+        </record>
+
+
+<!--         <record id="sale_orderform_view_account_move_data_miss" model="ir.ui.view">
+            <field name="name">account.move.data</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="techtime_univeristy.sale_orderform_view_account_move"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='level']" position="before">
+                    <field name="year" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+                </xpath>
+
+                <xpath expr="//field[@name='Subject']" position="after">
+                    <field name="department" options="{'no_quick_create': True, 'no_create_edit' : True, 'no_open':True}"/>
+                </xpath>
+              </field>
+            </record> -->
+    
+
+    
+
+    
+
+
+  </data>
+</odoo>
